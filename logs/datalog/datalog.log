@@ -1,0 +1,3 @@
+2017-08-18 10:26:59,640 [AWT-EventQueue-0] DEBUG [com.hxct.dao.AcDao.queryList] - ==>  Preparing: select * from ac order by id asc 
+2017-08-18 10:26:59,671 [AWT-EventQueue-0] DEBUG [com.hxct.dao.AcDao.queryList] - ==> Parameters: 
+2017-08-18 10:26:59,687 [AWT-EventQueue-0] DEBUG [com.hxct.dao.AcDao.queryList] - <==      Total: 5

@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!-- 为这个mapper指定一个唯一的namespace，namespace的值习惯上设置成包名+sql映射文件名，这样就能够保证namespace的值是唯一的 
+	例如namespace="me.gacl.mapping.userMapper"就是me.gacl.mapping(包名)+userMapper(userMapper.xml文件去除后缀) -->
+<mapper namespace="com.hxct.mapping.acMapper">
+	<!-- 在select标签中编写查询的SQL语句， 设置select标签的id属性为getUser，id属性值必须是唯一的，不能够重复 使用parameterType属性指明查询时使用的参数类型，resultType属性指明查询返回的结果集类型 
+		resultType="me.gacl.domain.User"就表示将查询结果封装成一个User类的对象返回 User类就是users表所对应的实体类 -->
+	<!-- 根据id查询得到一个user对象 -->
+	<select id="getAc" parameterType="int"
+		resultType="com.hxct.entity.AcEntity">
+		select * from ac where id=#{id}
+	</select>
+	<!-- 创建用户(Create) -->
+	<insert id="addAc" parameterType="com.hxct.entity.AcEntity">
+		insert into
+		ac(ipaddr,snmpport,readco,writeco,name,model,sysoid)
+		values(#{ipaddr},#{snmpport},#{readco},#{writeco},#{name},#{model},#{sysoid})
+	</insert>
+
+	<!-- 删除用户(Remove) -->
+	<delete id="deleteAc" parameterType="int">
+		delete from ac where id=#{id}
+	</delete>
+
+	<!-- 修改用户(Update) -->
+	<update id="updateAc" parameterType="com.hxct.entity.AcEntity">
+		update ac set ipaddr=#{ipaddr},snmpport=#{snmpport},readco=#{readco},writeco=#{writeco},name=#{name},model=#{model},sysoid=#{sysoid} where id=#{id}
+	</update>
+
+	<!-- 查询全部用户 -->
+	<select id="getAllAc" resultType="com.hxct.entity.AcEntity">
+		select * from ac
+	</select>
+	<!-- 查询全部用户 -->
+	<!-- <select id="getCurrDayData" parameterType="string" resultType="com.hxct.po.OnLineData"> 
+		select userId,userMac,nasIp,loginTime,logoutTime,onlineSec,createTime,authenMethod,userName,wirelessSSID,wirelessApMac 
+		from ipcdb.dbo.t_online_detail where loginTime>#{loginTime} </select> -->
+	<insert id="insertBatch" parameterType="ArrayList">
+		insert into
+		ac(ipaddr,snmpport,readco,writeco,name,model,sysoid) values
+		<foreach collection="list" item="obj" index="index" separator=",">
+			(#{obj.ipaddr},#{obj.snmpport},#{obj.readco},#{obj.writeco},#{obj.name},#{obj.model},#{obj.sysoid})
+		</foreach>
+	</insert>
+
+</mapper>

@@ -1,0 +1,219 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.hxct.dao.AccesspointDao">
+
+	<!-- 可根据自己的需求，是否要使用 -->
+    <resultMap type="com.hxct.entity.AccesspointEntity" id="accesspointMap">
+        <result property="id" column="id"/>
+        <result property="acid" column="acid"/>
+        <result property="index" column="index"/>
+        <result property="cover" column="cover"/>
+        <result property="uptime" column="uptime"/>
+        <result property="ownerunit" column="ownerunit"/>
+        <result property="contact" column="contact"/>
+        <result property="contactnumber" column="contactnumber"/>
+        <result property="hotspotid" column="hotspotid"/>
+        <result property="macaddr" column="macaddr"/>
+        <result property="ipaddress" column="ipaddress"/>
+        <result property="name" column="name"/>
+        <result property="location" column="location"/>
+        <result property="longitude" column="longitude"/>
+        <result property="latitude" column="latitude"/>
+        <result property="iskey" column="iskey"/>
+        <result property="uppoeport" column="uppoeport"/>
+        <result property="uppoedistance" column="uppoedistance"/>
+        <result property="gatewayloc" column="gatewayloc"/>
+        <result property="apsearial" column="apsearial"/>
+        <result property="type" column="type"/>
+        <result property="model" column="model"/>
+        <!--<association property="acid" javaType="com.hxct.entity.AcEntity" resultMap="acMap"/>-->
+   </resultMap>
+
+	<select id="queryObject" resultType="com.hxct.entity.AccesspointEntity">
+		select * from accesspoint where id = #{value}
+	</select>
+
+	<select id="queryList" resultType="com.hxct.entity.AccesspointEntity">
+		select * from accesspoint
+            <where>
+                   <if test="name != null and name.trim() != ''">
+                           and `name` like concat('%',#{name},'%') 
+                   </if>
+                   <if test="ipaddr != null and ipaddr.trim() != ''">
+                           and `ipaddress` like concat('%', #{ipaddr},'%') 
+                   </if>
+                   <if test="macaddr != null and macaddr.trim() != ''">
+                           and `macaddr` like concat('%', #{macaddr},'%') 
+                   </if>
+                   <if test="index != null and index.trim() != ''">
+                           and `index` like concat('%', #{index},'%') 
+                   </if>
+                   <if test="location != null and location.trim() != ''">
+                           and `location` like concat('%', #{location},'%') 
+                   </if>
+                   <if test="acid != null and acid != 0">
+                           and acid = #{acid} 
+                   </if>
+                   <if test="iskey != null and iskey != -1">
+                           and iskey = #{iskey} 
+                   </if>
+           </where>
+            <choose>
+            <when test="sidx != null and sidx.trim() != ''">
+                order by ${sidx} ${order}
+            </when>
+			<otherwise>
+                order by id asc
+			</otherwise>
+        </choose>
+		<if test="offset != null and limit != null">
+			limit #{offset}, #{limit}
+		</if>
+	</select>
+	
+ 	<select id="queryTotal" resultType="int">
+		select count(*) from accesspoint 
+	</select>
+	 
+	<insert id="save" parameterType="com.hxct.entity.AccesspointEntity" useGeneratedKeys="true" keyProperty="id">
+		insert into accesspoint
+		(
+			`acid`, 
+			`index`, 
+			`cover`, 
+			`uptime`, 
+			`ownerunit`, 
+			`contact`, 
+			`contactnumber`, 
+			`hotspotid`, 
+			`macaddr`, 
+			`ipaddress`, 
+			`name`, 
+			`location`, 
+			`longitude`, 
+			`latitude`, 
+			`iskey`, 
+			`uppoeport`, 
+			`uppoedistance`, 
+			`gatewayloc`, 
+			`apsearial`, 
+			`type`, 
+			`model`
+		)
+		values
+		(
+			#{acid}, 
+			#{index}, 
+			#{cover}, 
+			#{uptime}, 
+			#{ownerunit}, 
+			#{contact}, 
+			#{contactnumber}, 
+			#{hotspotid}, 
+			#{macaddr}, 
+			#{ipaddress}, 
+			#{name}, 
+			#{location}, 
+			#{longitude}, 
+			#{latitude}, 
+			#{iskey}, 
+			#{uppoeport}, 
+			#{uppoedistance}, 
+			#{gatewayloc}, 
+			#{apsearial}, 
+			#{type}, 
+			#{model}
+		)
+	</insert>
+	 
+	<update id="update" parameterType="com.hxct.entity.AccesspointEntity">
+		update accesspoint 
+		<set>
+			<if test="acid != null">`acid` = #{acid}, </if>
+			<if test="index != null">`index` = #{index}, </if>
+			<if test="cover != null">`cover` = #{cover}, </if>
+			<if test="uptime != null">`uptime` = #{uptime}, </if>
+			<if test="ownerunit != null">`ownerunit` = #{ownerunit}, </if>
+			<if test="contact != null">`contact` = #{contact}, </if>
+			<if test="contactnumber != null">`contactnumber` = #{contactnumber}, </if>
+			<if test="hotspotid != null">`hotspotid` = #{hotspotid}, </if>
+			<if test="macaddr != null">`macaddr` = #{macaddr}, </if>
+			<if test="ipaddress != null">`ipaddress` = #{ipaddress}, </if>
+			<if test="name != null">`name` = #{name}, </if>
+			<if test="location != null">`location` = #{location}, </if>
+			<if test="longitude != null">`longitude` = #{longitude}, </if>
+			<if test="latitude != null">`latitude` = #{latitude}, </if>
+			<if test="iskey != null">`iskey` = #{iskey}, </if>
+			<if test="uppoeport != null">`uppoeport` = #{uppoeport}, </if>
+			<if test="uppoedistance != null">`uppoedistance` = #{uppoedistance}, </if>
+			<if test="gatewayloc != null">`gatewayloc` = #{gatewayloc}, </if>
+			<if test="apsearial != null">`apsearial` = #{apsearial}, </if>
+			<if test="type != null">`type` = #{type}, </if>
+			<if test="model != null">`model` = #{model}</if>
+		</set>
+		where id = #{id}
+	</update>
+	
+	<delete id="delete">
+		delete from accesspoint where id = #{value}
+	</delete>
+	
+	<delete id="deleteBatch">
+		delete from accesspoint where id in 
+		<foreach item="id" collection="array" open="(" separator="," close=")">
+			#{id}
+		</foreach>
+	</delete>
+	<insert id="insertBatch" parameterType="ArrayList">
+		insert into
+		accesspoint(
+			`acid`, 
+			`index`, 
+			`cover`, 
+			`uptime`, 
+			`ownerunit`, 
+			`contact`, 
+			`contactnumber`, 
+			`hotspotid`, 
+			`macaddr`, 
+			`ipaddress`, 
+			`name`, 
+			`location`, 
+			`longitude`, 
+			`latitude`, 
+			`iskey`, 
+			`uppoeport`, 
+			`uppoedistance`, 
+			`gatewayloc`, 
+			`apsearial`, 
+			`type`, 
+			`model`
+            ) values
+		<foreach collection="list" item="obj" index="index" separator=",">
+			(
+			#{acid}, 
+			#{index}, 
+			#{cover}, 
+			#{uptime}, 
+			#{ownerunit}, 
+			#{contact}, 
+			#{contactnumber}, 
+			#{hotspotid}, 
+			#{macaddr}, 
+			#{ipaddress}, 
+			#{name}, 
+			#{location}, 
+			#{longitude}, 
+			#{latitude}, 
+			#{iskey}, 
+			#{uppoeport}, 
+			#{uppoedistance}, 
+			#{gatewayloc}, 
+			#{apsearial}, 
+			#{type}, 
+			#{model}
+                    )
+		</foreach>
+	</insert>
+</mapper>

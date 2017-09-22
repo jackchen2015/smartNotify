@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.hxct.dao.AcDao">
+
+	<!-- 可根据自己的需求，是否要使用 -->
+    <resultMap type="com.hxct.entity.AcEntity" id="acMap">
+        <result property="id" column="id"/>
+        <result property="ipaddr" column="ipaddr"/>
+        <result property="snmpport" column="snmpport"/>
+        <result property="readco" column="readco"/>
+        <result property="writeco" column="writeco"/>
+        <result property="name" column="name"/>
+        <result property="model" column="model"/>
+        <result property="sysoid" column="sysoid"/>
+    </resultMap>
+
+	<select id="queryObject" resultType="com.hxct.entity.AcEntity">
+		select * from ac where id = #{value}
+	</select>
+
+	<select id="queryList" resultType="com.hxct.entity.AcEntity">
+		select * from ac
+        <where>
+                <if test="name != null and name.trim() != ''">
+                        and `name` like concat('%',#{name},'%') 
+                </if>
+                <if test="ipaddr != null and ipaddr.trim() != ''">
+                        and `ipaddr` like concat('%', #{ipaddr},'%') 
+                </if>
+                <if test="model != null and model.trim() != ''">
+                        and `model` like concat('%', #{model},'%') 
+                </if>
+        </where>
+        <choose>
+            <when test="sidx != null and sidx.trim() != ''">
+                order by ${sidx} ${order}
+            </when>
+			<otherwise>
+                order by id asc
+			</otherwise>
+        </choose>
+		<if test="offset != null and limit != null">
+			limit #{offset}, #{limit}
+		</if>
+	</select>
+	
+ 	<select id="queryTotal" resultType="int">
+		select count(*) from ac 
+	</select>
+	 
+	<insert id="save" parameterType="com.hxct.entity.AcEntity" useGeneratedKeys="true" keyProperty="id">
+		insert into ac
+		(
+			`ipaddr`, 
+			`snmpport`, 
+			`readco`, 
+			`writeco`, 
+			`name`, 
+			`model`, 
+			`sysoid`
+		)
+		values
+		(
+			#{ipaddr}, 
+			#{snmpport}, 
+			#{readco}, 
+			#{writeco}, 
+			#{name}, 
+			#{model}, 
+			#{sysoid}
+		)
+	</insert>
+	 
+	<update id="update" parameterType="com.hxct.entity.AcEntity">
+		update ac 
+		<set>
+			<if test="ipaddr != null">`ipaddr` = #{ipaddr}, </if>
+			<if test="snmpport != null">`snmpport` = #{snmpport}, </if>
+			<if test="readco != null">`readco` = #{readco}, </if>
+			<if test="writeco != null">`writeco` = #{writeco}, </if>
+			<if test="name != null">`name` = #{name}, </if>
+			<if test="model != null">`model` = #{model}, </if>
+			<if test="sysoid != null">`sysoid` = #{sysoid}</if>
+		</set>
+		where id = #{id}
+	</update>
+	
+	<delete id="delete">
+		delete from ac where id = #{value}
+	</delete>
+	
+	<delete id="deleteBatch">
+		delete from ac where id in 
+		<foreach item="id" collection="array" open="(" separator="," close=")">
+			#{id}
+		</foreach>
+	</delete>
+
+</mapper>

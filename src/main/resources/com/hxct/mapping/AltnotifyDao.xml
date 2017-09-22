@@ -1,0 +1,119 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.hxct.dao.AltnotifyDao">
+
+	<!-- 可根据自己的需求，是否要使用 -->
+    <resultMap type="com.hxct.entity.AltnotifyEntity" id="altnotifyMap">
+        <result property="id" column="id"/>
+        <result property="type" column="type"/>
+        <result property="smtpserver" column="smtpserver"/>
+        <result property="smtpport" column="smtpport"/>
+        <result property="mailsender" column="mailsender"/>
+        <result property="senderalias" column="senderalias"/>
+        <result property="mailuser" column="mailuser"/>
+        <result property="mailpwd" column="mailpwd"/>
+        <result property="smtpssl" column="smtpssl"/>
+        <result property="smtpauth" column="smtpauth"/>
+        <result property="smsserverip" column="smsserverip"/>
+        <result property="smsserverport" column="smsserverport"/>
+        <result property="smsaccountsid" column="smsaccountsid"/>
+        <result property="smsaccounttoken" column="smsaccounttoken"/>
+        <result property="smsappid" column="smsappid"/>
+    </resultMap>
+
+	<select id="queryObject" resultType="com.hxct.entity.AltnotifyEntity">
+		select * from altnotify where id = #{value}
+	</select>
+
+	<select id="queryList" resultType="com.hxct.entity.AltnotifyEntity">
+		select * from altnotify
+        <choose>
+            <when test="sidx != null and sidx.trim() != ''">
+                order by ${sidx} ${order}
+            </when>
+			<otherwise>
+                order by id desc
+			</otherwise>
+        </choose>
+		<if test="offset != null and limit != null">
+			limit #{offset}, #{limit}
+		</if>
+	</select>
+	
+ 	<select id="queryTotal" resultType="int">
+		select count(*) from altnotify 
+	</select>
+	 
+	<insert id="save" parameterType="com.hxct.entity.AltnotifyEntity">
+		insert into altnotify
+		(
+			`id`, 
+			`type`, 
+			`smtpserver`, 
+			`smtpport`, 
+			`mailsender`, 
+			`senderalias`, 
+			`mailuser`, 
+			`mailpwd`, 
+			`smtpssl`, 
+			`smtpauth`, 
+			`smsserverip`, 
+			`smsserverport`, 
+			`smsaccountsid`, 
+			`smsaccounttoken`, 
+			`smsappid`
+		)
+		values
+		(
+			#{id}, 
+			#{type}, 
+			#{smtpserver}, 
+			#{smtpport}, 
+			#{mailsender}, 
+			#{senderalias}, 
+			#{mailuser}, 
+			#{mailpwd}, 
+			#{smtpssl}, 
+			#{smtpauth}, 
+			#{smsserverip}, 
+			#{smsserverport}, 
+			#{smsaccountsid}, 
+			#{smsaccounttoken}, 
+			#{smsappid}
+		)
+	</insert>
+	 
+	<update id="update" parameterType="com.hxct.entity.AltnotifyEntity">
+		update altnotify 
+		<set>
+			<if test="type != null">`type` = #{type}, </if>
+			<if test="smtpserver != null">`smtpserver` = #{smtpserver}, </if>
+			<if test="smtpport != null">`smtpport` = #{smtpport}, </if>
+			<if test="mailsender != null">`mailsender` = #{mailsender}, </if>
+			<if test="senderalias != null">`senderalias` = #{senderalias}, </if>
+			<if test="mailuser != null">`mailuser` = #{mailuser}, </if>
+			<if test="mailpwd != null">`mailpwd` = #{mailpwd}, </if>
+			<if test="smtpssl != null">`smtpssl` = #{smtpssl}, </if>
+			<if test="smtpauth != null">`smtpauth` = #{smtpauth}, </if>
+			<if test="smsserverip != null">`smsserverip` = #{smsserverip}, </if>
+			<if test="smsserverport != null">`smsserverport` = #{smsserverport}, </if>
+			<if test="smsaccountsid != null">`smsaccountsid` = #{smsaccountsid}, </if>
+			<if test="smsaccounttoken != null">`smsaccounttoken` = #{smsaccounttoken}, </if>
+			<if test="smsappid != null">`smsappid` = #{smsappid}</if>
+		</set>
+		where id = #{id}
+	</update>
+	
+	<delete id="delete">
+		delete from altnotify where id = #{value}
+	</delete>
+	
+	<delete id="deleteBatch">
+		delete from altnotify where id in 
+		<foreach item="id" collection="array" open="(" separator="," close=")">
+			#{id}
+		</foreach>
+	</delete>
+
+</mapper>

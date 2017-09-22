@@ -1,0 +1,137 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.hxct.dao.AlertnotifyDao">
+
+	<!-- 可根据自己的需求，是否要使用 -->
+    <resultMap type="com.hxct.entity.AlertnotifyEntity" id="alertnotifyMap">
+        <result property="id" column="id"/>
+        <result property="type" column="type"/>
+        <result property="smtpserver" column="smtpserver"/>
+        <result property="smtpport" column="smtpport"/>
+        <result property="mailsender" column="mailsender"/>
+        <result property="senderalias" column="senderalias"/>
+        <result property="mailuser" column="mailuser"/>
+        <result property="mailpwd" column="mailpwd"/>
+        <result property="smtpssl" column="smtpssl"/>
+        <result property="smtpauth" column="smtpauth"/>
+        <result property="mailrecv" column="mailrecv"/>
+        <result property="mailtitle" column="mailtitle"/>
+        <result property="mailbody" column="mailbody"/>
+        <result property="smsserverip" column="smsserverip"/>
+        <result property="smsserverport" column="smsserverport"/>
+        <result property="smssendurl" column="smssendurl"/>
+        <result property="smsaccount" column="smsaccount"/>
+        <result property="smspassword" column="smspassword"/>
+        <result property="smsrecvnumber" column="smsrecvnumber"/>
+        <result property="smsmsg" column="smsmsg"/>
+    </resultMap>
+
+	<select id="queryObject" resultType="com.hxct.entity.AlertnotifyEntity">
+		select * from alertnotify where id = #{value}
+	</select>
+
+	<select id="queryList" resultType="com.hxct.entity.AlertnotifyEntity">
+		select * from alertnotify
+        <choose>
+            <when test="sidx != null and sidx.trim() != ''">
+                order by ${sidx} ${order}
+            </when>
+			<otherwise>
+                order by id desc
+			</otherwise>
+        </choose>
+		<if test="offset != null and limit != null">
+			limit #{offset}, #{limit}
+		</if>
+	</select>
+	
+ 	<select id="queryTotal" resultType="int">
+		select count(*) from alertnotify 
+	</select>
+	 
+	<insert id="save" parameterType="com.hxct.entity.AlertnotifyEntity" useGeneratedKeys="true" keyProperty="id">
+		insert into alertnotify
+		(
+			`type`, 
+			`smtpserver`, 
+			`smtpport`, 
+			`mailsender`, 
+			`senderalias`, 
+			`mailuser`, 
+			`mailpwd`, 
+			`smtpssl`, 
+			`smtpauth`, 
+			`mailrecv`, 
+			`mailtitle`, 
+			`mailbody`, 
+			`smsserverip`, 
+			`smsserverport`, 
+			`smssendurl`, 
+			`smsaccount`, 
+			`smspassword`, 
+			`smsrecvnumber`, 
+			`smsmsg`
+		)
+		values
+		(
+			#{type}, 
+			#{smtpserver}, 
+			#{smtpport}, 
+			#{mailsender}, 
+			#{senderalias}, 
+			#{mailuser}, 
+			#{mailpwd}, 
+			#{smtpssl}, 
+			#{smtpauth}, 
+			#{mailrecv}, 
+			#{mailtitle}, 
+			#{mailbody}, 
+			#{smsserverip}, 
+			#{smsserverport}, 
+			#{smssendurl}, 
+			#{smsaccount}, 
+			#{smspassword}, 
+			#{smsrecvnumber}, 
+			#{smsmsg}
+		)
+	</insert>
+	 
+	<update id="update" parameterType="com.hxct.entity.AlertnotifyEntity">
+		update alertnotify 
+		<set>
+			<if test="type != null">`type` = #{type}, </if>
+			<if test="smtpserver != null">`smtpserver` = #{smtpserver}, </if>
+			<if test="smtpport != null">`smtpport` = #{smtpport}, </if>
+			<if test="mailsender != null">`mailsender` = #{mailsender}, </if>
+			<if test="senderalias != null">`senderalias` = #{senderalias}, </if>
+			<if test="mailuser != null">`mailuser` = #{mailuser}, </if>
+			<if test="mailpwd != null">`mailpwd` = #{mailpwd}, </if>
+			<if test="smtpssl != null">`smtpssl` = #{smtpssl}, </if>
+			<if test="smtpauth != null">`smtpauth` = #{smtpauth}, </if>
+			<if test="mailrecv != null">`mailrecv` = #{mailrecv}, </if>
+			<if test="mailtitle != null">`mailtitle` = #{mailtitle}, </if>
+			<if test="mailbody != null">`mailbody` = #{mailbody}, </if>
+			<if test="smsserverip != null">`smsserverip` = #{smsserverip}, </if>
+			<if test="smsserverport != null">`smsserverport` = #{smsserverport}, </if>
+			<if test="smssendurl != null">`smssendurl` = #{smssendurl}, </if>
+			<if test="smsaccount != null">`smsaccount` = #{smsaccount}, </if>
+			<if test="smspassword != null">`smspassword` = #{smspassword}, </if>
+			<if test="smsrecvnumber != null">`smsrecvnumber` = #{smsrecvnumber}, </if>
+			<if test="smsmsg != null">`smsmsg` = #{smsmsg}</if>
+		</set>
+		where id = #{id}
+	</update>
+	
+	<delete id="delete">
+		delete from alertnotify where id = #{value}
+	</delete>
+	
+	<delete id="deleteBatch">
+		delete from alertnotify where id in 
+		<foreach item="id" collection="array" open="(" separator="," close=")">
+			#{id}
+		</foreach>
+	</delete>
+
+</mapper>
