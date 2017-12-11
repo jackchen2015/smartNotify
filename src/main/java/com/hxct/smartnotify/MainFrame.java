@@ -1311,7 +1311,7 @@ public class MainFrame extends javax.swing.JFrame
 			if(session==null)
 			{
 				session = sessionFactory.newSnmpSession(targetFactory
-					.newSnmpTarget(ac.getIpaddr(), 161));
+					.newSnmpTarget(ac.getIpaddr(), ac.getSnmpport()));
 				allSnmpSessions.put(ac.getId(), session);
 			}
 		}

@@ -8,6 +8,7 @@ import com.hxct.entity.AcEntity;
 import com.hxct.entity.AccesspointEntity;
 import com.hxct.notify.QueueLink;
 import com.hxct.util.SnmpUtil;
+import java.util.Calendar;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -33,6 +34,12 @@ public class ApPollJob implements Job
 	{
 		String obj = null;
 		long currentTime = System.currentTimeMillis();
+		Calendar cal=Calendar.getInstance();
+		cal.setTimeInMillis(currentTime);
+		if(cal.get(Calendar.DAY_OF_WEEK)==Calendar.SATURDAY||cal.get(Calendar.DAY_OF_WEEK)==Calendar.SUNDAY)
+		{
+			return;
+		}
 		SqlSession mysqlSession = (SqlSession)context.getMergedJobDataMap().get("mysqlSession");
 //		int type = (int)context.getMergedJobDataMap().get("type");
 //		String emailTitle = (String)context.getMergedJobDataMap().get("emailTitle");
@@ -77,14 +84,14 @@ public class ApPollJob implements Job
 						snmpGet(acc.getIpaddr(), acc.getReadco(), acc.getSnmpport(), 1, statusOid);
 				if(acc.getModel().equals("ZXWL"))
 				{
-					if(obj!=null&&!obj.equals("4"))
+					if(obj!=null&&!obj.equals("4")&&!obj.equalsIgnoreCase("noSuchInstance"))
 					{
 						queue.put(ape);
 					}					
 				}
 				else
 				{
-					if(obj!=null&&!obj.equals("6"))
+					if(obj!=null&&!obj.equals("6")&&!obj.equalsIgnoreCase("noSuchInstance"))
 					{
 						queue.put(ape);
 					}

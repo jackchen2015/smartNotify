@@ -73,7 +73,7 @@ public class OperateTable
 		for(AcEntity ac:allAcs)
 		{
 			Map<String, Integer> maps = new HashMap<String, Integer>();
-			session = getSnmpSession(ac.getIpaddr(), 161,	"public", "private");
+			session = getSnmpSession(ac.getIpaddr(), ac.getSnmpport(),	"public", "private");
 			String macoid = "1.3.6.1.4.1.3902.2505.1.1.15.102.1.1.1.3";
 			List<VariableBinding> allapMac = session.getBulk(new String[] { macoid });
 			if (allapMac == null || allapMac.size() == 0) {
