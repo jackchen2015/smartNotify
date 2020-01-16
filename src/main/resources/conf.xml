@@ -1,43 +1,49 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE configuration PUBLIC "-//mybatis.org//DTD Config 3.0//EN" "http://mybatis.org/dtd/mybatis-3-config.dtd">
 <configuration>
-	<environments default="development">
-		<environment id="MSSQL">
-			<transactionManager type="JDBC" />
-			<!-- 配置数据库连接信息 -->
-			<dataSource type="POOLED">
-				<property name="driver"
-					value="com.microsoft.sqlserver.jdbc.SQLServerDriver" />
-				<property name="url"
-					value="jdbc:sqlserver://10.10.10.10:1433;Database=IPCDB" />
-				<property name="username" value="sa" />
-				<property name="password" value="Huawei12#$" />
-			</dataSource>
-		</environment>
-		<environment id="MYSQL">
-			<transactionManager type="JDBC" />
-			<!-- 配置数据库连接信息 -->
-			<dataSource type="POOLED">
-				<property name="driver" value="com.mysql.jdbc.Driver" />
-				<property name="url"
-					value="jdbc:mysql://localhost:3306/joindb?useUnicode=true&amp;characterEncoding=utf8&amp;useSSL=false" />
-				<property name="username" value="root" />
-				<property name="password" value="chen" />
-			</dataSource>
-		</environment>
-	</environments>
-	<mappers>
-		<!-- 注册userMapper.xml文件， userMapper.xml位于me.gacl.mapping这个包下，所以resource写成me/gacl/mapping/userMapper.xml -->
-		<mapper resource="com/hxct/mapping/AcDao.xml" />
-                <mapper resource="com/hxct/mapping/AccesspointDao.xml" />
-                <mapper resource="com/hxct/mapping/AltnotifyDao.xml" />
-                <mapper resource="com/hxct/mapping/AlertnotifyDao.xml" />
-		<mapper resource="com/hxct/mapping/ApsetupDao.xml" />
-                <mapper resource="com/hxct/mapping/FitapDao.xml" />
-                <mapper resource="com/hxct/mapping/KeyapDao.xml" />
-		<!-- 注册UserMapper映射接口 -->
+    <environments default="development">
+        <environment id="MSSQL">
+                <transactionManager type="JDBC" />
+                <!-- 配置数据库连接信息 -->
+                <dataSource type="POOLED">
+                        <property name="driver"
+                                value="com.microsoft.sqlserver.jdbc.SQLServerDriver" />
+                        <property name="url"
+                                value="jdbc:sqlserver://10.10.10.10:1433;Database=IPCDB" />
+                        <property name="username" value="sa" />
+                        <property name="password" value="Huawei12#$" />
+                </dataSource>
+        </environment>
+        <environment id="MYSQL">
+                <transactionManager type="JDBC" />
+                <!-- 配置数据库连接信息 -->
+                <dataSource type="POOLED">
+                        <property name="driver" value="com.mysql.jdbc.Driver" />
+                        <property name="url"
+                                value="jdbc:mysql://localhost:3306/joindb?useUnicode=true&amp;characterEncoding=utf8&amp;useSSL=false" />
+                        <property name="username" value="root" />
+                        <property name="password" value="chen" />
+                </dataSource>
+        </environment>
+        <environment id="SQLITE">
+            <transactionManager type="JDBC" />
+            <!-- 配置数据库连接信息 -->
+            <dataSource type="POOLED">
+                <property name="driver" value="org.sqlite.JDBC" />
+                <property name="url"
+                        value="jdbc:sqlite:E:\\person\\smartNotify\\smartNotify" />
+                <property name="username" value="" />
+                <property name="password" value="" />
+            </dataSource>
+        </environment>
+    </environments>
+    <mappers>
+            <!-- 注册userMapper.xml文件， userMapper.xml位于me.gacl.mapping这个包下，所以resource写成me/gacl/mapping/userMapper.xml -->
+        <mapper resource="com/hxct/mapping/GateWayDao.xml" />
+        <mapper resource="com/hxct/mapping/AlertnotifyDao.xml" />
+            <!-- 注册UserMapper映射接口 -->
 <!--		<mapper class="com.hxct.dao.AcDao" />
-                <mapper class="com.hxct.dao.AccesspointDao" /> -->
+            <mapper class="com.hxct.dao.GateWayDao" /> -->
 
-	</mappers>
+    </mappers>
 </configuration>

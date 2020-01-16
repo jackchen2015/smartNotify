@@ -1,10 +1,14 @@
 package com.hxct.notify;
 
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.UnsupportedEncodingException;
+import java.io.*;
+import java.net.HttpURLConnection;
+import java.net.URL;
 import java.net.URLDecoder;
 import java.net.URLEncoder;
+import java.util.HashMap;
+import java.util.Map;
+
+import com.alibaba.fastjson.JSONObject;
 import org.apache.commons.httpclient.HttpClient;
 import org.apache.commons.httpclient.HttpStatus;
 import org.apache.commons.httpclient.NameValuePair;
@@ -33,6 +37,55 @@ public class ChuanglanSMS {
 		this.account = account;
 		this.password = password;
 		client = HttpClients.createDefault();
+	}
+
+	public static String sendSmsByPost(String path, String postContent) {
+		URL url = null;
+		try {
+			url = new URL(path);
+			HttpURLConnection httpURLConnection = (HttpURLConnection) url.openConnection();
+			httpURLConnection.setRequestMethod("POST");
+			httpURLConnection.setConnectTimeout(10000);
+			httpURLConnection.setReadTimeout(10000);
+			httpURLConnection.setDoOutput(true);
+			httpURLConnection.setDoInput(true);
+			httpURLConnection.setRequestProperty("Charset", "UTF-8");
+			httpURLConnection.setRequestProperty("Content-Type", "application/json");
+			httpURLConnection.connect();
+			OutputStream os=httpURLConnection.getOutputStream();
+			os.write(postContent.getBytes("UTF-8"));
+			os.flush();
+			StringBuilder sb = new StringBuilder();
+			int httpRspCode = httpURLConnection.getResponseCode();
+			if (httpRspCode == HttpURLConnection.HTTP_OK) {
+				BufferedReader br = new BufferedReader(
+						new InputStreamReader(httpURLConnection.getInputStream(), "utf-8"));
+				String line = null;
+				while ((line = br.readLine()) != null) {
+					sb.append(line);
+				}
+				br.close();
+				return sb.toString();
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return null;
+	}
+
+	public String sendUseNew(String sendUrl, String account, String pswd, String mobile, String msg,
+							 boolean needstatus, String product, String extno) {
+		//短信下发
+		Map map = new HashMap();
+		map.put("account",account);//API账号
+		map.put("password",pswd);//API密码
+		map.put("msg", msg);//短信内容
+		map.put("phone",mobile);//手机号
+		map.put("report", needstatus);//是否需要状态报告
+		map.put("extend", extno);//自定义扩展码
+		JSONObject js = (JSONObject) JSONObject.toJSON(map);
+		String ret = sendSmsByPost(sendUrl,js.toString());
+		return ret;
 	}
 	
 	/**

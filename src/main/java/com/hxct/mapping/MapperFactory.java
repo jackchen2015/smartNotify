@@ -54,6 +54,23 @@ public enum MapperFactory {
         public SqlSessionFactory getSqlSessionFactory() {  
             return sqlSessionFactory;  
         }  
+    },
+    SQLITE {  
+        private SqlSessionFactory sqlSessionFactory;  
+        @Override  
+        public <T> T createMapper(Class<? extends Mapper> clazz) {  
+            return MapperFactory.createMapper(clazz, this);  
+        }  
+          
+        @Override  
+        protected void createSqlSessionFactory() {  
+            sqlSessionFactory = new SqlSessionFactoryBuilder().build(inputStream, this.name());  
+        }  
+          
+        @Override  
+        public SqlSessionFactory getSqlSessionFactory() {  
+            return sqlSessionFactory;  
+        }  
     };  
       
     /** 
@@ -79,7 +96,8 @@ public enum MapperFactory {
         try {  
             inputStream = Resources.getResourceAsStream("conf.xml");  
             MYSQL.createSqlSessionFactory();  
-            MSSQL.createSqlSessionFactory();  
+            MSSQL.createSqlSessionFactory();
+            SQLITE.createSqlSessionFactory();
         } catch (IOException e) {  
             e.printStackTrace();  
         } finally {  

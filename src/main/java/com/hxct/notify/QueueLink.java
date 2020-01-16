@@ -5,7 +5,8 @@
 
 package com.hxct.notify;
 
-import java.util.LinkedList;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  *
@@ -13,18 +14,18 @@ import java.util.LinkedList;
  * Created on 2017-8-16, 15:56:36
  */
 public class QueueLink<E> {
-    private LinkedList<E> list;
+    private List<E> list;
 
     public QueueLink() {
-        list = new LinkedList<E>();
+        list = new ArrayList<E>();
     }
    //入队
     public  void put(E e) {
-        list.addLast(e);
+        list.add(e);
     }
    //出队
     public  E pop() {
-        return list.removeFirst();
+        return list.remove(0);
     }
 
     public  boolean isEmpty() {
@@ -36,6 +37,6 @@ public class QueueLink<E> {
     }
    //获得队列的第一个元素
     public  E front() {
-        return list.getFirst();
+        return list.get(0);
     }
 }

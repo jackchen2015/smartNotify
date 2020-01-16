@@ -71,7 +71,8 @@ public class MyBatisUtil {
      */  
     public static enum DataSourceEnvironment {  
         MSSQL,  
-        MYSQL;  
+        MYSQL,
+        SQLITE;  
     }  
 
 }

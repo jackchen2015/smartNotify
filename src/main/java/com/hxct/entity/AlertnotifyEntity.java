@@ -17,7 +17,7 @@ public class AlertnotifyEntity implements Serializable {
 	
 	//
 	private Integer id;
-	//
+	//类型(0:email 1:sms 2:both 3:none)
 	private Integer type;
 	//
 	private String smtpserver;

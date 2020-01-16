@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.hxct.dao.GateWayDao">
+
+	<!-- 可根据自己的需求，是否要使用 -->
+    <resultMap type="com.hxct.entity.GateWayEntity" id="GateWayMap">
+        <result property="id" column="id"/>
+        <result property="ipaddress" column="ipaddress"/>
+        <result property="name" column="name"/>
+        <result property="location" column="location"/>
+        <result property="iskey" column="iskey"/>
+        <!--<association property="acid" javaType="com.hxct.entity.AcEntity" resultMap="acMap"/>-->
+   </resultMap>
+
+	<select id="queryObject" resultType="com.hxct.entity.GateWayEntity">
+		select * from GateWay where id = #{value}
+	</select>
+
+	<select id="queryList" resultType="com.hxct.entity.GateWayEntity">
+		select * from GateWay
+            <where>
+                   <if test="name != null and name.trim() != ''">
+                           and `name` like '%${name}%'
+                   </if>
+                   <if test="ipaddress != null and ipaddress.trim() != ''">
+                           and `ipaddress` like '%${ipaddress}%'
+                   </if>
+                   <if test="location != null and location.trim() != ''">
+                           and `location` like '%${location}%'
+                   </if>
+                   <if test="iskey != null and iskey != -1">
+                           and iskey = #{iskey} 
+                   </if>
+           </where>
+            <choose>
+            <when test="sidx != null and sidx.trim() != ''">
+                order by ${sidx} ${order}
+            </when>
+			<otherwise>
+                order by id asc
+			</otherwise>
+        </choose>
+		<if test="offset != null and limit != null">
+			limit #{offset}, #{limit}
+		</if>
+	</select>
+	
+ 	<select id="queryTotal" resultType="int">
+		select count(*) from GateWay 
+	</select>
+	 
+	<insert id="save" parameterType="com.hxct.entity.GateWayEntity" useGeneratedKeys="true" keyProperty="id">
+		insert into GateWay
+		(
+			`ipaddress`, 
+			`name`, 
+			`location`, 
+			`iskey`, 
+		)
+		values
+		(
+			#{ipaddress}, 
+			#{name}, 
+			#{location}, 
+			#{iskey}, 
+		)
+	</insert>
+	 
+	<update id="update" parameterType="com.hxct.entity.GateWayEntity">
+		update GateWay 
+		<set>
+			<if test="ipaddress != null">`ipaddress` = #{ipaddress}, </if>
+			<if test="name != null">`name` = #{name}, </if>
+			<if test="location != null">`location` = #{location}, </if>
+			<if test="iskey != null">`iskey` = #{iskey}, </if>
+		</set>
+		where id = #{id}
+	</update>
+	
+	<delete id="delete">
+		delete from GateWay where id = #{value}
+	</delete>
+	
+	<delete id="deleteBatch">
+		delete from GateWay where id in 
+		<foreach item="id" collection="array" open="(" separator="," close=")">
+			#{id}
+		</foreach>
+	</delete>
+	<insert id="insertBatch" parameterType="ArrayList">
+		insert into
+		GateWay(
+			`ipaddress`, 
+			`name`, 
+			`location`, 
+			`iskey`, 
+            ) values
+		<foreach collection="list" item="obj" index="index" separator=",">
+			(
+			#{ipaddress}, 
+			#{name}, 
+			#{location}, 
+			#{iskey}, 
+                    )
+		</foreach>
+	</insert>
+</mapper>
