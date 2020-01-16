@@ -121,7 +121,7 @@ public class DevicePollManager
 		allGWJob.add(ip);
 	}
 	
-	public static void startJob(SqlSession sqliteSession, GateWayEntity gw, int intervalId, QueueLink<GateWayEntity> queue)
+	public static void startJob(SqlSession sqliteSession, GateWayEntity gw, int intervalId, QueueLink<GateWayEntity> queue, boolean weekedSnd)
 	{
 		Scheduler sched = null;
 		try
@@ -141,16 +141,16 @@ public class DevicePollManager
 		switch(intervalId)
 		{
 			case 0://每5分钟一次，分工作时段和非工作时段
-				cronStr = "0 0/5 9,10,11,12,13,14,15,16,17,18 * * ?";//"0 0/5 9,10,11,12,13,14,15,16,17,18 * * ?";
+				cronStr = "0 0/5 8,9,10,11,12,13,14,15,16,17 * * ?";//"0 0/5 9,10,11,12,13,14,15,16,17,18 * * ?";
 				break;
 			case 1://每15分钟一次，分工作时段和非工作时段
-				cronStr = "0 0/15 9,10,11,12,13,14,15,16,17,18 * * ? ";//"0 0/15 9,10,11,12,13,14,15,16,17,18 * * ? ";
+				cronStr = "0 0/15 8,9,10,11,12,13,14,15,16,17 * * ? ";//"0 0/15 9,10,11,12,13,14,15,16,17,18 * * ? ";
 				break;
 			case 2://每30分钟一次，分工作时段和非工作时段
-				cronStr = "0 0/30 9,10,11,12,13,14,15,16,17,18 * * ? ";//"0 0/30 9,10,11,12,13,14,15,16,17,18 * * ? ";
+				cronStr = "0 0/30 8,9,10,11,12,13,14,15,16,17 * * ? ";//"0 0/30 9,10,11,12,13,14,15,16,17,18 * * ? ";
 				break;
 			case 3://每小时一次，分工作时段和非工作时段
-				cronStr = "0 0 9,10,11,12,13,14,15,16,17,18 * * ? *";//0 0 * * * ? //"0 0 9,10,11,12,13,14,15,16,17,18 * * ? *"
+				cronStr = "0 0 8,9,10,11,12,13,14,15,16,17 * * ? *";//0 0 * * * ? //"0 0 9,10,11,12,13,14,15,16,17,18 * * ? *"
 				break;
 			case 4://每12小时一次 9点，18点 
 				cronStr = "0 0 9,18 * * ? *";//"0 0 9,18 * * ? *"
@@ -178,6 +178,7 @@ public class DevicePollManager
 //		jobDetail.getJobDataMap().put("emailMsg", emailMsg);
 		jobDetail.getJobDataMap().put("gateway", gw);
 		jobDetail.getJobDataMap().put("queue", queue);
+                jobDetail.getJobDataMap().put("weekedSnd", weekedSnd);
 		try
 		{
 			sched.scheduleJob(jobDetail, trigger);

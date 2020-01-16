@@ -157,6 +157,7 @@ public class MainFrame extends javax.swing.JFrame {
         jLabel21 = new javax.swing.JLabel();
         modifyConfig = new javax.swing.JButton();
         noemailsms = new javax.swing.JRadioButton();
+        weekedSnd = new javax.swing.JCheckBox();
         logPanel = new javax.swing.JPanel();
         jScrollPane1 = new javax.swing.JScrollPane();
         logTable = new javax.swing.JTable();
@@ -426,7 +427,7 @@ public class MainFrame extends javax.swing.JFrame {
                     .addComponent(emailTitle, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jScrollPane3, javax.swing.GroupLayout.DEFAULT_SIZE, 57, Short.MAX_VALUE)
+                    .addComponent(jScrollPane3, javax.swing.GroupLayout.DEFAULT_SIZE, 56, Short.MAX_VALUE)
                     .addComponent(jLabel16))
                 .addContainerGap())
         );
@@ -468,7 +469,7 @@ public class MainFrame extends javax.swing.JFrame {
                 .addGap(18, 18, 18)
                 .addGroup(jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jLabel12)
-                    .addComponent(jScrollPane5, javax.swing.GroupLayout.DEFAULT_SIZE, 40, Short.MAX_VALUE))
+                    .addComponent(jScrollPane5, javax.swing.GroupLayout.DEFAULT_SIZE, 41, Short.MAX_VALUE))
                 .addContainerGap())
         );
 
@@ -500,6 +501,8 @@ public class MainFrame extends javax.swing.JFrame {
 
         buttonGroup1.add(noemailsms);
         noemailsms.setText("不通知");
+
+        weekedSnd.setText("周末发送通知");
 
         javax.swing.GroupLayout jPanel5Layout = new javax.swing.GroupLayout(jPanel5);
         jPanel5.setLayout(jPanel5Layout);
@@ -533,10 +536,12 @@ public class MainFrame extends javax.swing.JFrame {
                                 .addComponent(pollingTimes, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(jLabel20)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 342, Short.MAX_VALUE)
+                        .addGap(86, 86, 86)
+                        .addComponent(weekedSnd)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(startBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 73, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(jPanel5Layout.createSequentialGroup()
-                        .addComponent(jLabel21, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(jLabel21, javax.swing.GroupLayout.DEFAULT_SIZE, 750, Short.MAX_VALUE)
                         .addGap(27, 27, 27)
                         .addComponent(modifyConfig)
                         .addGap(18, 18, 18)))
@@ -553,17 +558,16 @@ public class MainFrame extends javax.swing.JFrame {
                             .addComponent(intervalCb, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(jLabel19)
                             .addComponent(pollingTimes, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jLabel20))
-                        .addGap(20, 20, 20)
+                            .addComponent(jLabel20)
+                            .addComponent(weekedSnd))
+                        .addGap(18, 18, 18)
                         .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.CENTER)
+                            .addComponent(jLabel10)
                             .addComponent(emailRb)
                             .addComponent(smsRb)
                             .addComponent(emailsmsRb)
                             .addComponent(noemailsms)))
-                    .addComponent(startBtn, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addGroup(jPanel5Layout.createSequentialGroup()
-                        .addGap(45, 45, 45)
-                        .addComponent(jLabel10)))
+                    .addComponent(startBtn, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addGap(18, 18, 18)
                 .addComponent(jPanel6, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
@@ -585,11 +589,11 @@ public class MainFrame extends javax.swing.JFrame {
 
             },
             new String [] {
-                "发送时间", "通知类型", "设备IP", "位置信息", "发送状态"
+                "发送时间", "站点名称", "通知类型", "设备IP", "位置信息", "发送状态"
             }
         ) {
             Class[] types = new Class [] {
-                java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.Boolean.class
+                java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.Boolean.class
             };
 
             public Class getColumnClass(int columnIndex) {
@@ -667,11 +671,13 @@ public class MainFrame extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(this, "任务已启动");
             int pollTimes = pollingTimes.getSelectedIndex() + 1;
             QueueLink<GateWayEntity> queue = new QueueLink<GateWayEntity>();
+            int intervalIdx = intervalCb.getSelectedIndex();
+            boolean weeked = weekedSnd.isSelected();
             for(GateWayEntity gw : allGws){
                 if(gw.getIskey()==0){
                     continue;
                 }
-                DevicePollManager.startJob(sqliteSession, gw, intervalCb.getSelectedIndex(), queue);                
+                DevicePollManager.startJob(sqliteSession, gw, intervalIdx, queue, weeked);
             }
             NotifyThread nt = new NotifyThread(logTable, queue, pollTimes, altNotify);
             Thread thread = new Thread(nt);
@@ -953,6 +959,7 @@ public class MainFrame extends javax.swing.JFrame {
     private javax.swing.JRadioButton smsRb;
     private javax.swing.JToggleButton startBtn;
     private javax.swing.JLabel totalline;
+    private javax.swing.JCheckBox weekedSnd;
     // End of variables declaration//GEN-END:variables
 
     private void initTable() {

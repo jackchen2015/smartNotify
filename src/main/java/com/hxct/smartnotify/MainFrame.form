@@ -393,11 +393,13 @@
                               </Group>
                               <EmptySpace max="-2" attributes="0"/>
                               <Component id="jLabel20" min="-2" max="-2" attributes="0"/>
-                              <EmptySpace pref="342" max="32767" attributes="0"/>
+                              <EmptySpace min="-2" pref="86" max="-2" attributes="0"/>
+                              <Component id="weekedSnd" min="-2" max="-2" attributes="0"/>
+                              <EmptySpace max="32767" attributes="0"/>
                               <Component id="startBtn" min="-2" pref="73" max="-2" attributes="0"/>
                           </Group>
                           <Group type="102" alignment="0" attributes="0">
-                              <Component id="jLabel21" max="32767" attributes="0"/>
+                              <Component id="jLabel21" pref="750" max="32767" attributes="0"/>
                               <EmptySpace min="-2" pref="27" max="-2" attributes="0"/>
                               <Component id="modifyConfig" min="-2" max="-2" attributes="0"/>
                               <EmptySpace min="-2" pref="18" max="-2" attributes="0"/>
@@ -419,9 +421,11 @@
                                   <Component id="jLabel19" alignment="3" min="-2" max="-2" attributes="0"/>
                                   <Component id="pollingTimes" alignment="3" min="-2" max="-2" attributes="0"/>
                                   <Component id="jLabel20" alignment="3" min="-2" max="-2" attributes="0"/>
+                                  <Component id="weekedSnd" alignment="3" min="-2" max="-2" attributes="0"/>
                               </Group>
-                              <EmptySpace min="-2" pref="20" max="-2" attributes="0"/>
+                              <EmptySpace min="-2" pref="18" max="-2" attributes="0"/>
                               <Group type="103" groupAlignment="2" attributes="0">
+                                  <Component id="jLabel10" alignment="2" min="-2" max="-2" attributes="0"/>
                                   <Component id="emailRb" alignment="2" min="-2" max="-2" attributes="0"/>
                                   <Component id="smsRb" alignment="2" min="-2" max="-2" attributes="0"/>
                                   <Component id="emailsmsRb" alignment="2" min="-2" max="-2" attributes="0"/>
@@ -429,10 +433,6 @@
                               </Group>
                           </Group>
                           <Component id="startBtn" max="32767" attributes="0"/>
-                          <Group type="102" attributes="0">
-                              <EmptySpace min="45" pref="45" max="-2" attributes="0"/>
-                              <Component id="jLabel10" min="-2" max="-2" attributes="0"/>
-                          </Group>
                       </Group>
                       <EmptySpace type="separate" min="-2" max="-2" attributes="0"/>
                       <Component id="jPanel6" max="32767" attributes="0"/>
@@ -568,7 +568,7 @@
                           </Group>
                           <EmptySpace type="unrelated" min="-2" max="-2" attributes="0"/>
                           <Group type="103" groupAlignment="0" attributes="0">
-                              <Component id="jScrollPane3" pref="57" max="32767" attributes="0"/>
+                              <Component id="jScrollPane3" pref="56" max="32767" attributes="0"/>
                               <Component id="jLabel16" min="-2" max="-2" attributes="0"/>
                           </Group>
                           <EmptySpace min="-2" max="-2" attributes="0"/>
@@ -683,7 +683,7 @@
                           <EmptySpace type="separate" min="-2" max="-2" attributes="0"/>
                           <Group type="103" groupAlignment="0" attributes="0">
                               <Component id="jLabel12" min="-2" max="-2" attributes="0"/>
-                              <Component id="jScrollPane5" pref="40" max="32767" attributes="0"/>
+                              <Component id="jScrollPane5" pref="41" max="32767" attributes="0"/>
                           </Group>
                           <EmptySpace min="-2" max="-2" attributes="0"/>
                       </Group>
@@ -798,6 +798,11 @@
                 <Property name="text" type="java.lang.String" value="&#x4e0d;&#x901a;&#x77e5;"/>
               </Properties>
             </Component>
+            <Component class="javax.swing.JCheckBox" name="weekedSnd">
+              <Properties>
+                <Property name="text" type="java.lang.String" value="&#x5468;&#x672b;&#x53d1;&#x9001;&#x901a;&#x77e5;"/>
+              </Properties>
+            </Component>
           </SubComponents>
         </Container>
         <Container class="javax.swing.JPanel" name="logPanel">
@@ -839,13 +844,51 @@
                 <Component class="javax.swing.JTable" name="logTable">
                   <Properties>
                     <Property name="model" type="javax.swing.table.TableModel" editor="org.netbeans.modules.form.editors2.TableModelEditor">
-                      <Table columnCount="5" rowCount="0">
+                      <Table columnCount="6" rowCount="0">
                         <Column editable="true" title="&#x53d1;&#x9001;&#x65f6;&#x95f4;" type="java.lang.String"/>
+                        <Column editable="true" title="&#x7ad9;&#x70b9;&#x540d;&#x79f0;" type="java.lang.String"/>
                         <Column editable="true" title="&#x901a;&#x77e5;&#x7c7b;&#x578b;" type="java.lang.String"/>
                         <Column editable="true" title="&#x8bbe;&#x5907;IP" type="java.lang.String"/>
                         <Column editable="true" title="&#x4f4d;&#x7f6e;&#x4fe1;&#x606f;" type="java.lang.String"/>
                         <Column editable="true" title="&#x53d1;&#x9001;&#x72b6;&#x6001;" type="java.lang.Boolean"/>
                       </Table>
+                    </Property>
+                    <Property name="columnModel" type="javax.swing.table.TableColumnModel" editor="org.netbeans.modules.form.editors2.TableColumnModelEditor">
+                      <TableColumnModel selectionModel="0">
+                        <Column maxWidth="-1" minWidth="-1" prefWidth="-1" resizable="true">
+                          <Title/>
+                          <Editor/>
+                          <Renderer/>
+                        </Column>
+                        <Column maxWidth="-1" minWidth="-1" prefWidth="-1" resizable="true">
+                          <Title/>
+                          <Editor/>
+                          <Renderer/>
+                        </Column>
+                        <Column maxWidth="-1" minWidth="-1" prefWidth="-1" resizable="true">
+                          <Title/>
+                          <Editor/>
+                          <Renderer/>
+                        </Column>
+                        <Column maxWidth="-1" minWidth="-1" prefWidth="-1" resizable="true">
+                          <Title/>
+                          <Editor/>
+                          <Renderer/>
+                        </Column>
+                        <Column maxWidth="-1" minWidth="-1" prefWidth="-1" resizable="true">
+                          <Title/>
+                          <Editor/>
+                          <Renderer/>
+                        </Column>
+                        <Column maxWidth="-1" minWidth="-1" prefWidth="-1" resizable="true">
+                          <Title/>
+                          <Editor/>
+                          <Renderer/>
+                        </Column>
+                      </TableColumnModel>
+                    </Property>
+                    <Property name="tableHeader" type="javax.swing.table.JTableHeader" editor="org.netbeans.modules.form.editors2.JTableHeaderEditor">
+                      <TableHeader reorderingAllowed="true" resizingAllowed="true"/>
                     </Property>
                   </Properties>
                 </Component>

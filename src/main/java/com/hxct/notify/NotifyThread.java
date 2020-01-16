@@ -116,7 +116,7 @@ public class NotifyThread implements Runnable {
                             default:
                                 break;
                         }
-                        ((DefaultTableModel)logTable.getModel()).addRow(new Object[]{sdfTime.format(new Date()), typeStr, gwip, loc, true});                        
+                        ((DefaultTableModel)logTable.getModel()).addRow(new Object[]{sdfTime.format(new Date()), gwname, typeStr, gwip, loc, true});                        
 
                         gwTimes.put(gwip, 0);
                     }

@@ -31,10 +31,13 @@ public class GwPollJob implements Job
 		long currentTime = System.currentTimeMillis();
 		Calendar cal=Calendar.getInstance();
 		cal.setTimeInMillis(currentTime);
-		if(cal.get(Calendar.DAY_OF_WEEK)==Calendar.SATURDAY||cal.get(Calendar.DAY_OF_WEEK)==Calendar.SUNDAY)
-		{
-			return;
-		}
+                boolean weekedSnd = context.getMergedJobDataMap().getBoolean("weekedSnd");
+                if(!weekedSnd){
+                    if(cal.get(Calendar.DAY_OF_WEEK)==Calendar.SATURDAY||cal.get(Calendar.DAY_OF_WEEK)==Calendar.SUNDAY)
+                    {
+                            return;
+                    }                    
+                }
 //		SqlSession sqliteSession = (SqlSession)context.getMergedJobDataMap().get("sqliteSession");
 //		int type = (int)context.getMergedJobDataMap().get("type");
 //		String emailTitle = (String)context.getMergedJobDataMap().get("emailTitle");
