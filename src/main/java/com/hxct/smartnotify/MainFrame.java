@@ -10,6 +10,7 @@
  */
 package com.hxct.smartnotify;
 
+import com.hxct.entity.AlertEntity;
 import com.hxct.entity.GateWayEntity;
 import com.hxct.entity.AlertnotifyEntity;
 import com.hxct.notify.NotifyThread;
@@ -31,7 +32,9 @@ import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.io.File;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -61,7 +64,8 @@ public class MainFrame extends javax.swing.JFrame {
     private SystemTray tray;
     private TrayIcon trayIcon;
     private AlertnotifyEntity altNotify = null;
-
+    private SimpleDateFormat sdfTime = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+    
     /**
      * Creates new form MainFrame
      */
@@ -589,11 +593,11 @@ public class MainFrame extends javax.swing.JFrame {
 
             },
             new String [] {
-                "发送时间", "站点名称", "通知类型", "设备IP", "位置信息", "发送状态"
+                "序号", "发送时间", "站点名称", "通知类型", "设备IP", "位置信息", "发送状态"
             }
         ) {
             Class[] types = new Class [] {
-                java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.Boolean.class
+                java.lang.Integer.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.Boolean.class
             };
 
             public Class getColumnClass(int columnIndex) {
@@ -679,7 +683,7 @@ public class MainFrame extends javax.swing.JFrame {
                 }
                 DevicePollManager.startJob(sqliteSession, gw, intervalIdx, queue, weeked);
             }
-            NotifyThread nt = new NotifyThread(logTable, queue, pollTimes, altNotify);
+            NotifyThread nt = new NotifyThread(this, queue, pollTimes, altNotify);
             Thread thread = new Thread(nt);
             thread.start();
             enableControl(false);
@@ -979,6 +983,13 @@ public class MainFrame extends javax.swing.JFrame {
         gwTableModel.setValueAt(gwe.getLocation(), selRow, 3);
         gwTableModel.setValueAt(gwe.getIskey() == 1 ? "是" : "否", selRow, 4);
         return true;
+    }
+    
+    public void addAlert(AlertEntity alt){
+        int id = sqliteSession.insert("com.hxct.dao.AlertDao.save", alt);
+        System.out.println("id is:"+id);
+        sqliteSession.commit();
+        ((DefaultTableModel)logTable.getModel()).addRow(new Object[]{alt.getId(), sdfTime.format(alt.getSndTime()), alt.getGwname(), alt.getType(), alt.getGwip(), alt.getGwloc(), true});
     }
 
     private void enableControl(boolean b) {

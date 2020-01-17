@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.hxct.dao.AlertDao">
+
+	<!-- 可根据自己的需求，是否要使用 -->
+    <resultMap type="com.hxct.entity.AlertEntity" id="AlertMap">
+        <result property="id" column="id"/>
+        <result property="gwname" column="gwname"/>
+        <result property="gwloc" column="gwloc"/>
+        <result property="gwip" column="gwip"/>
+        <result property="type" column="type"/>
+        <result property="sndTime" column="sndTime"/>
+        <!--<association property="acid" javaType="com.hxct.entity.AcEntity" resultMap="acMap"/>-->
+   </resultMap>
+
+	<select id="queryObject" resultType="com.hxct.entity.AlertEntity">
+		select * from Alert where id = #{value}
+	</select>
+
+	<select id="queryList" resultType="com.hxct.entity.AlertEntity">
+		select * from Alert
+            <where>
+                   <if test="gwname != null and gwname.trim() != ''">
+                           and `gwname` like '%${gwname}%'
+                   </if>
+                   <if test="gwloc != null and gwloc.trim() != ''">
+                           and `gwloc` like '%${gwloc}%'
+                   </if>
+                   <if test="gwip != null and gwip.trim() != ''">
+                           and `gwip` like '%${gwip}%'
+                   </if>
+                   <if test="type != null and type.trim() != ''">
+                           and `type` like '%${type}%'
+                   </if>
+           </where>
+            <choose>
+            <when test="sidx != null and sidx.trim() != ''">
+                order by ${sidx} ${order}
+            </when>
+			<otherwise>
+                order by id asc
+			</otherwise>
+        </choose>
+		<if test="offset != null and limit != null">
+			limit #{offset}, #{limit}
+		</if>
+	</select>
+	
+ 	<select id="queryTotal" resultType="int">
+		select count(*) from Alert 
+	</select>
+	 
+	<insert id="save" parameterType="com.hxct.entity.AlertEntity" useGeneratedKeys="true" keyProperty="id">
+		insert into Alert
+		(
+			`gwname`, 
+			`gwloc`, 
+			`gwip`, 
+                        `type`,
+			`sndTime` 
+		)
+		values
+		(
+			#{gwname}, 
+			#{gwloc}, 
+			#{gwip},
+                        #{type},
+			#{sndTime} 
+		)
+	</insert>
+	 
+	<update id="update" parameterType="com.hxct.entity.AlertEntity">
+		update Alert 
+		<set>
+			<if test="gwname != null">`gwname` = #{gwname}, </if>
+			<if test="gwloc != null">`gwloc` = #{gwloc}, </if>
+			<if test="gwip != null">`gwip` = #{gwip}, </if>
+                        <if test="type != null">`type` = #{type}, </if>
+			<if test="sndTime != null">`sndTime` = #{sndTime} </if>
+		</set>
+		where id = #{id}
+	</update>
+	
+	<delete id="delete">
+		delete from Alert where id = #{value}
+	</delete>
+	
+	<delete id="deleteBatch">
+		delete from Alert where id in 
+		<foreach item="id" collection="array" open="(" separator="," close=")">
+			#{id}
+		</foreach>
+	</delete>
+	<insert id="insertBatch" parameterType="ArrayList">
+		insert into
+		Alert(
+			`gwname`, 
+			`gwloc`, 
+			`gwip`, 
+                        `type`,
+			`sndTime` 
+            ) values
+		<foreach collection="list" item="obj" index="index" separator=",">
+			(
+			#{gwname}, 
+			#{gwloc}, 
+			#{gwip},
+                        #{type},
+			#{sndTime} 
+                    )
+		</foreach>
+	</insert>
+</mapper>

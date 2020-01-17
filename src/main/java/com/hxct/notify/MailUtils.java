@@ -44,7 +44,7 @@ public class MailUtils {
 	private static String nick;
 	static {
 		try {
-			nick = "昵称 asdfasd";
+			nick = "东西湖WIFI站点运维中心";
 			// nick + from 组成邮箱的发件人信息
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -75,7 +75,7 @@ public class MailUtils {
 			body = "";
 		}
 		if (subject == null) {
-			subject = "公司时间1";
+			subject = "通知";
 		}
 		// 创建Properties对象
 		Properties props = System.getProperties();
@@ -109,7 +109,8 @@ public class MailUtils {
 		// 创建一个消息，并初始化该消息的各项元素
 		MimeMessage msg = new MimeMessage(session);
 		nick = MimeUtility.encodeText(nick);
-		msg.setFrom(new InternetAddress(from));
+		//msg.setFrom(new InternetAddress(from));
+                msg.setFrom(new InternetAddress(nick+" <"+from+">"));
 		// 创建收件人列表
 		if (to != null && to.trim().length() > 0) {
 			String[] arr = to.split(",");

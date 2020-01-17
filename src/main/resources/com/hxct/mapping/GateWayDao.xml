@@ -63,7 +63,7 @@
 			#{ipaddress}, 
 			#{name}, 
 			#{location}, 
-			#{iskey}, 
+			#{iskey}
 		)
 	</insert>
 	 

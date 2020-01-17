@@ -4,8 +4,10 @@
  */
 package com.hxct.notify;
 
+import com.hxct.entity.AlertEntity;
 import com.hxct.entity.GateWayEntity;
 import com.hxct.entity.AlertnotifyEntity;
+import com.hxct.smartnotify.MainFrame;
 import java.io.UnsupportedEncodingException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -31,10 +33,11 @@ public class NotifyThread implements Runnable {
     private AlertnotifyEntity altNotify;
     private SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
     private SimpleDateFormat sdfTime = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-    private final JTable logTable;
 
-    public NotifyThread(JTable logTable, QueueLink<GateWayEntity> queue, int pollTimes, AlertnotifyEntity altNotify) {
-        this.logTable = logTable;
+    private final MainFrame mf;
+
+    public NotifyThread(MainFrame mf, QueueLink<GateWayEntity> queue, int pollTimes, AlertnotifyEntity altNotify) {
+        this.mf = mf;
         this.allNotifys = queue;
         this.pollTimes = pollTimes;
         this.altNotify = altNotify;
@@ -116,8 +119,13 @@ public class NotifyThread implements Runnable {
                             default:
                                 break;
                         }
-                        ((DefaultTableModel)logTable.getModel()).addRow(new Object[]{sdfTime.format(new Date()), gwname, typeStr, gwip, loc, true});                        
-
+                        AlertEntity alt = new AlertEntity();
+                        alt.setGwip(gwip);
+                        alt.setGwloc(loc);
+                        alt.setGwname(gwname);
+                        alt.setType(typeStr);
+                        alt.setSndTime(new Date());
+                        mf.addAlert(alt);
                         gwTimes.put(gwip, 0);
                     }
                 } catch (MessagingException ex) {
